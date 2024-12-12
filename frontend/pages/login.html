@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/signup.css" />
+  </head>
+  <body>
+    <div class="container" id="form-container">
+      <h2>Login</h2>
+      <form action="./login.html" id="sign-up-form">
+        <label for="email">Enter your email: </label>
+        <input
+          id="email"
+          type="email"
+          placeholder="example@gmail.com"
+          required
+        />
+        <label for="password">Enter your password: </label>
+        <input type="password" name="password" id="password" required />
+        <button type="submit">Login</button>
+      </form>
+      <p><a href="./signup.html">New User - Signup</a></p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="./js/Signup.js"></script>
+  </body>
+</html>
