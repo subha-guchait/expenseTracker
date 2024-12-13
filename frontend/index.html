@@ -4,12 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <p><a href="./pages/signup.html">Signup</a></p>
-    <p><a href="./pages/login.html">login</a></p>
+    <form action="" id="add-expense-form">
+      <label for="amount">Enter Amount</label>
+      <input type="number" id="amount" />
+      <label for="desc">Enter Description</label>
+      <input type="text" id="desc" />
+      <label for="category">Choose catagory</label>
+      <select name="category" id="category">
+        <option value="choose">Choose..</option>
+        <option value="fuel">Fuel</option>
+        <option value="food">Food</option>
+        <option value="salary">Salary</option>
+        <option value="gadgets">Gadgets</option>
+        <option value="rent">Rent</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="travel">Travel</option>
+      </select>
+      <button type="submit">Add</button>
+    </form>
+    <h2 id="expHead">Expenses</h2>
+    <ul id="expenseList"></ul>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
-    <script src="./js/script.js"></script>
+    <script src="./js/index.js"></script>
   </body>
 </html>

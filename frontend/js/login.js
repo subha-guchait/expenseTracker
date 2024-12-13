@@ -22,10 +22,8 @@ logInForm.addEventListener("submit", async (e) => {
       logInDetail
     );
     // console.log(response);
-
-    if (response.status == 200) {
-      alert("User logged in Sucessfully");
-    }
+    alert("User logged in Sucessfully");
+    window.location.href = "../index.html";
   } catch (err) {
     const p = document.createElement("p");
     p.id = "error-message";
