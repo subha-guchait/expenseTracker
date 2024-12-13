@@ -1,14 +1,21 @@
+const bcrypt = require("bcrypt");
+
 const User = require("../models/user");
 
 exports.signup = async (req, res, next) => {
   try {
-    const userDetail = req.body;
+    const { name, email, password } = req.body;
 
-    if (!userDetail.name || !userDetail.email || !userDetail.password) {
+    if (!name || !email || !password) {
       return res.status(400).json({ error: "All fields are mandatory" });
     }
-    const data = await User.create(userDetail);
-    res.status(201).json(data);
+
+    const saltrounds = 10;
+    bcrypt.hash(password, saltrounds, async (err, hash) => {
+      //   console.log(err);
+      await User.create({ name, email, password: hash });
+      res.status(201).json({ message: "sucessfully create new user" });
+    });
   } catch (err) {
     res.status(500).json({ err: err });
   }
@@ -20,13 +27,21 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ where: { email: email } });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
-    if (password === user.password) {
-      return res.status(200).json({ message: "User login sucessful" });
+    const passwordmatch = await bcrypt.compare(password, user.password);
+
+    if (passwordmatch) {
+      return res
+        .status(200)
+        .json({ success: true, message: "User login sucessful" });
     } else {
-      return res.status(401).json({ message: "User not authorized" });
+      return res
+        .status(401)
+        .json({ success: false, message: "User not authorized" });
     }
   } catch (err) {
     res.status(500).json({ err: err });

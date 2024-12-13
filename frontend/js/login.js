@@ -21,8 +21,11 @@ logInForm.addEventListener("submit", async (e) => {
       "http://localhost:3000/user/login",
       logInDetail
     );
+    // console.log(response);
 
-    console.log(response);
+    if (response.status == 200) {
+      alert("User logged in Sucessfully");
+    }
   } catch (err) {
     const p = document.createElement("p");
     p.id = "error-message";
@@ -31,10 +34,12 @@ logInForm.addEventListener("submit", async (e) => {
     p.style.fontWeight = "bold";
     p.style.marginTop = "10px";
 
-    if (err.response.data.message === "User not authorized") {
+    if (err.response.status === 401) {
       p.innerHTML = "Password Incorrect";
-    } else if (err.response.data.message === "User not found") {
+    } else if (err.response.status === 404) {
       p.innerHTML = "Email not exists";
+    } else {
+      p.innerHTML = "Something went wrong";
     }
 
     formContainer.appendChild(p);
