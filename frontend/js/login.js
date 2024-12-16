@@ -23,6 +23,7 @@ logInForm.addEventListener("submit", async (e) => {
     );
     // console.log(response);
     alert("User logged in Sucessfully");
+    localStorage.setItem("token", response.data.token);
     window.location.href = "../index.html";
   } catch (err) {
     const p = document.createElement("p");
@@ -39,6 +40,7 @@ logInForm.addEventListener("submit", async (e) => {
     } else {
       p.innerHTML = "Something went wrong";
     }
+    console.log(err);
 
     formContainer.appendChild(p);
   }

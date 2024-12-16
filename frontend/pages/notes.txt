@@ -1,0 +1,34 @@
+probelm
+-how can i add expense 
+-how can i tell the backend which user has added expense and which users expenses i have to show
+
+one easy solution -
+- when the user login we have get the userid from backend
+- store the user id to local storage
+
+-then in post request for expense we will pass the user id in expensedetails json 
+-but for get request when we have to get all expenses we can't pass any body so here we can pass user id in the params in api routes 
+
+--instead of passing it in routes and json we can pass it in header that will easy for us i didn't have to pass in routes and body
+---we can set header by axios.setHeader it will be one time process so we don' have to pass user id every time
+
+-but here is also problem if someone know userId they can easly add and delete expenses 
+
+right solution
+- After sucessfull login (checking email and password in backend) we will generate a token in backend sent the token to fronend
+
+- we encrypt the userId with secret key (secret key can be any random string saved in backend) to get token [here we use jwt library to generate token]
+-- userId + secretkey -> encryption -> token
+-after getting token in frontend we set the token as key value pair in localstorage
+
+-so whenever we have to make request to the backend:
+- we send token in header to make request to backend
+-in backend we get token and will decrypt it with secret key and will get the user id
+-- header -> token
+-- token -> decrypt with secret key -> userId
+
+-if someone tempered token we will get error
+---tampered token -> decrypt with secretkey -> error
+
+
+

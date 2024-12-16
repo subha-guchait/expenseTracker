@@ -1,6 +1,11 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
+
+const generateAccessToken = (id, name) => {
+  return jwt.sign({ userId: id, name: name }, process.env.JWT_SECRET);
+};
 
 exports.signup = async (req, res, next) => {
   try {
@@ -35,15 +40,18 @@ exports.login = async (req, res, next) => {
     const passwordmatch = await bcrypt.compare(password, user.password);
 
     if (passwordmatch) {
-      return res
-        .status(200)
-        .json({ success: true, message: "User login sucessful" });
+      return res.status(200).json({
+        success: true,
+        message: "User login sucessful",
+        token: generateAccessToken(user.id, user.name),
+      });
     } else {
       return res
         .status(401)
         .json({ success: false, message: "User not authorized" });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({ err: err });
   }
 };
