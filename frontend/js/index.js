@@ -2,6 +2,7 @@ const addExpenseForm = document.getElementById("add-expense-form");
 const amount = document.getElementById("amount");
 const desc = document.getElementById("desc");
 const category = document.getElementById("category");
+const premiumBtn = document.getElementById("buy-premium");
 
 addExpenseForm.addEventListener("submit", async (e) => {
   try {
@@ -32,6 +33,9 @@ addExpenseForm.addEventListener("submit", async (e) => {
 window.addEventListener("DOMContentLoaded", async () => {
   try {
     const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "./pages/login.html";
+    }
     const response = await axios.get("http://localhost:3000/getexpenses", {
       headers: { Authorization: token },
     });
@@ -61,15 +65,75 @@ function displayNewExpense(expense) {
 
   dltBtn.addEventListener("click", async () => {
     try {
-      console.log("dltbtn clicked1");
       const token = localStorage.getItem("token");
       await axios.delete(`http://localhost:3000/deleteexpense/${expense.id}`, {
         headers: { Authorization: token },
       });
-      console.log("dltbtn clicked 2");
       document.getElementById(`expense-${expense.id}`).remove();
     } catch (err) {
       console.log(err);
     }
   });
 }
+
+premiumBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem("token");
+    let res = await axios.get(
+      "http://localhost:3000/purchase/premiummembership",
+      { headers: { Authorization: token } }
+    );
+    let sessionId = res.data.payment_session_id;
+    let orderId = res.data.order_id;
+    let checkoutOptions = {
+      paymentSessionId: sessionId,
+      redirectTarget: "_modal",
+    };
+
+    let result = await cashfree.checkout(checkoutOptions);
+
+    console.log(result);
+
+    let response = await axios.post(
+      "http://localhost:3000/purchase/updatetransactionstatus",
+      { orderId: orderId },
+      { headers: { Authorization: token } }
+    );
+    console.log(response);
+    alert("You are a Premium User Now");
+    premiumBtn.style.visibility = "hidden";
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+const cashfree = Cashfree({
+  mode: "sandbox",
+});
+
+const getSessionId = async (token) => {
+  try {
+    let res = await axios.get(
+      "http://localhost:3000/purchase/premiummembership",
+      { headers: { Authorization: token } }
+    );
+    // console.log(res.data);
+    return res.data.payment_session_id;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const verifyPayment = async (token, orderId) => {
+  try {
+    let response = await axios.post(
+      "http://localhost:3000/purchase/updatetransactionstatus",
+      { orderId: orderId },
+      { headers: { Authorization: token } }
+    );
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
+};

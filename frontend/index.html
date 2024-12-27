@@ -5,30 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/index.css" />
   </head>
   <body>
-    <form action="" id="add-expense-form">
-      <label for="amount">Enter Amount</label>
-      <input type="number" id="amount" required />
-      <label for="desc">Enter Description</label>
-      <input type="text" id="desc" required />
-      <label for="category">Choose catagory</label>
-      <select name="category" id="category" required>
-        <option value="choose">Choose..</option>
-        <option value="fuel">Fuel</option>
-        <option value="food">Food</option>
-        <option value="salary">Salary</option>
-        <option value="gadgets">Gadgets</option>
-        <option value="rent">Rent</option>
-        <option value="entertainment">Entertainment</option>
-        <option value="travel">Travel</option>
-      </select>
-      <button type="submit">Add</button>
-    </form>
+    <div id="header">
+      <button id="buy-premium">Buy Premium</button>
+    </div>
+    <div id="container">
+      <form action="" id="add-expense-form">
+        <label for="amount">Enter Amount</label>
+        <input type="number" id="amount" required />
+        <label for="desc">Enter Description</label>
+        <input type="text" id="desc" required />
+        <label for="category">Choose catagory</label>
+        <select name="category" id="category" required>
+          <option value="" disabled selected>Choose..</option>
+          <option value="fuel">Fuel</option>
+          <option value="food">Food</option>
+          <option value="salary">Salary</option>
+          <option value="gadgets">Gadgets</option>
+          <option value="rent">Rent</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="travel">Travel</option>
+        </select>
+        <button type="submit">Add</button>
+      </form>
+    </div>
+
     <h2 id="expHead">Expenses</h2>
     <ul id="expenseList"></ul>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
     <script src="./js/index.js"></script>
   </body>
 </html>
