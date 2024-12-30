@@ -8,18 +8,30 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  box-sizing: border-box;
 }
+
 #header {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+
+  align-items: center;
   padding: 10px 20px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
 }
+
+#premium-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #28a745; /* Green for premium users */
+  margin: 0 auto; /* Center aligns this element in the flex container */
+  text-align: center; /* Ensure proper alignment for text */
+  flex-grow: 1;
+}
+
 #buy-premium {
   background-color: #007bff;
   color: white;
@@ -29,6 +41,7 @@ body {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-left: auto; /* Pushes the button to the far right */
 }
 
 #buy-premium:hover {
@@ -38,7 +51,7 @@ body {
 #container {
   width: 100%;
   max-width: 600px;
-  margin: 20px auto;
+  margin: 20px 0;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -132,6 +145,22 @@ form button:hover {
 
 .delete-btn:hover {
   background-color: #c82333;
+}
+
+/* Premium Header Animation */
+#premium-header {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Design */

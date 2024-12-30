@@ -3,8 +3,11 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 
-const generateAccessToken = (id, name) => {
-  return jwt.sign({ userId: id, name: name }, process.env.JWT_SECRET);
+const generateAccessToken = (id, name, isPremium) => {
+  return jwt.sign(
+    { userId: id, name: name, isPremium: isPremium },
+    process.env.JWT_SECRET
+  );
 };
 
 exports.signup = async (req, res, next) => {
@@ -43,7 +46,7 @@ exports.login = async (req, res, next) => {
       return res.status(200).json({
         success: true,
         message: "User login sucessful",
-        token: generateAccessToken(user.id, user.name),
+        token: generateAccessToken(user.id, user.name, user.ispremiumuser),
       });
     } else {
       return res

@@ -8,10 +8,10 @@ const router = express.Router();
 router.get(
   "/premiummembership",
   userAuth.authenticate,
-  purchaseController.purchasePremium
+  purchaseController.processpayment
 );
 router.post(
-  "/updatetransactionstatus",
+  "/updatetransactionstatus/:orderId",
   purchaseController.updateTransactionStatus
 );
 
