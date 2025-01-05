@@ -14,7 +14,6 @@ body {
 #header {
   width: 100%;
   display: flex;
-
   align-items: center;
   padding: 10px 20px;
   background-color: #f9f9f9;
@@ -178,4 +177,69 @@ form button:hover {
     align-self: flex-end;
     margin-top: 10px;
   }
+}
+
+/* Leaderboard Section */
+#leaderboardSection {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px 0;
+  display: none; /* Initially hidden */
+}
+
+#leadHead {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#leaderList {
+  list-style-type: none;
+  padding: 0;
+}
+
+#leaderList li {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #555;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#leaderList li span {
+  font-weight: bold;
+  color: #28a745; /* Highlighted text */
+}
+
+#show-leaderboard {
+  background-color: #4caf50; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Padding for size */
+  font-size: 16px; /* Font size */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+#show-leaderboard:hover {
+  background-color: #45a049; /* Darker green on hover */
+  transform: translateY(-2px); /*Slight upward movement on hover*/
+}
+
+#show-leaderboard:active {
+  transform: translateY(1px); /* Slight downward movement on click */
 }

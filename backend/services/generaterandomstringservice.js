@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 
-exports.generateOrderId = () => {
+exports.generateRandomString = () => {
   const uniqueId = crypto.randomBytes(16).toString("hex");
 
   const hash = crypto.createHash("sha256");

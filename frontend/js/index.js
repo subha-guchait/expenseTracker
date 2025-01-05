@@ -17,7 +17,7 @@ addExpenseForm.addEventListener("submit", async (e) => {
     const token = localStorage.getItem("token");
 
     const response = await axios.post(
-      "http://localhost:3000/postexpense",
+      "http://localhost:3000/expense/postexpense",
       expenseDetail,
       {
         headers: { Authorization: token },
@@ -37,9 +37,19 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (!token) {
       window.location.href = "./pages/login.html";
     }
-    const response = await axios.get("http://localhost:3000/getexpenses", {
-      headers: { Authorization: token },
-    });
+
+    const user = parseJwt(token);
+    // console.log(user);
+    if (user.isPremium) {
+      showPremium();
+    }
+
+    const response = await axios.get(
+      "http://localhost:3000/expense/getexpenses",
+      {
+        headers: { Authorization: token },
+      }
+    );
 
     response.data.expenses.forEach((expense) => {
       displayNewExpense(expense);
@@ -67,9 +77,12 @@ function displayNewExpense(expense) {
   dltBtn.addEventListener("click", async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:3000/deleteexpense/${expense.id}`, {
-        headers: { Authorization: token },
-      });
+      await axios.delete(
+        `http://localhost:3000/expense/deleteexpense/${expense.id}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
       document.getElementById(`expense-${expense.id}`).remove();
     } catch (err) {
       console.log(err);
@@ -106,12 +119,9 @@ premiumBtn.addEventListener("click", async (e) => {
     );
     console.log(response);
     if (response.data.orderStatus === "Sucess") {
+      await updateAccessToken();
       alert("You are a Premium User Now");
-      premiumBtn.style.visibility = "hidden";
-      const premiumHeader = document.createElement("div");
-      premiumHeader.id = "premium-header";
-      premiumHeader.textContent = "\u{1F389} Welcome, Premium User!";
-      header.appendChild(premiumHeader);
+      showPremium();
     }
   } catch (err) {
     console.log(err);
@@ -146,4 +156,66 @@ const verifyPayment = async (token, orderId) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+const showPremium = () => {
+  premiumBtn.style.visibility = "hidden";
+  const premiumHeader = document.createElement("div");
+  premiumHeader.id = "premium-header";
+  premiumHeader.textContent = "\u{1F389} Welcome, Premium User!";
+  header.appendChild(premiumHeader);
+  const showLeaderboardBtn = document.createElement("button");
+  showLeaderboardBtn.textContent = "Show Leaderboard";
+  showLeaderboardBtn.id = "show-leaderboard";
+  header.appendChild(showLeaderboardBtn);
+  showLeaderboardBtn.addEventListener("click", async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        "http://localhost:3000/premium/leaderboard",
+        { headers: { Authorization: token } }
+      );
+      console.log(response.data);
+      const leaderboardList = document.getElementById("leaderList");
+      leaderboardList.innerHTML = "";
+      response.data.userLeaderboardDetails.forEach((user) => {
+        const userItem = document.createElement("li");
+        userItem.textContent = `${user.name} - ${user.totalExpense}`;
+        leaderboardList.appendChild(userItem);
+      });
+      const leaderboardSection = document.getElementById("leaderboardSection");
+      leaderboardSection.style.display = "block";
+
+      leaderboardSection.scrollIntoView({ behavior: "smooth" });
+    } catch (err) {
+      console.log(err);
+    }
+  });
+};
+
+function parseJwt(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+
+  return JSON.parse(jsonPayload);
+}
+
+const updateAccessToken = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(
+    "http://localhost:3000/user/getupdatedtoken",
+    {
+      headers: { Authorization: token },
+    }
+  );
+  localStorage.setItem("token", response.data.token);
 };

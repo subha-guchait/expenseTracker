@@ -1,14 +1,9 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
-
-const generateAccessToken = (id, name, isPremium) => {
-  return jwt.sign(
-    { userId: id, name: name, isPremium: isPremium },
-    process.env.JWT_SECRET
-  );
-};
+const {
+  generateAccessToken,
+} = require("../services/generateAcesstokenService");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -56,5 +51,22 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ err: err });
+  }
+};
+
+exports.getUpdatedAccessToken = async (req, res, next) => {
+  try {
+    return res.status(200).json({
+      sucess: true,
+      message: "Access token updated",
+      token: generateAccessToken(
+        req.user.id,
+        req.user.name,
+        req.user.ispremiumuser
+      ),
+    });
+  } catch (err) {
+    console.err("Error updating access token:", err.message);
+    res.status(500).json({ message: "Error updating access token" });
   }
 };

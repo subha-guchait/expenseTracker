@@ -1,6 +1,8 @@
 const Order = require("../models/order");
 const User = require("../models/user");
-const { generateOrderId } = require("../services/generateorderidservice");
+const {
+  generateRandomString,
+} = require("../services/generaterandomstringservice");
 const {
   createorder,
   getPaymentStatus,
@@ -10,7 +12,7 @@ exports.processpayment = async (req, res, next) => {
   const name = req.user.name;
   const email = req.user.email;
 
-  const orderId = "ORDER-" + generateOrderId();
+  const orderId = "ORDER-" + generateRandomString();
   const orderAmount = 100;
   const orderCurrency = "INR";
   const customerID = "devstudio_user";
