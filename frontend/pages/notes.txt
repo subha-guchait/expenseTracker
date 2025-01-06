@@ -31,4 +31,36 @@ right solution
 ---tampered token -> decrypt with secretkey -> error
 
 
+-Problem: How to select a selcted number of coulumn in sequlize from a database table
+-in the expense table we have so many coulmn but we need only amount and userId
+--ans: const expenses = Expnse.findAll({attributes:['userId','amount']})
+--by use attributes we can specify which coulmn we need
+
+
+-Problem: How to group by in Sequelize
+-sol: we can group by single coulmn or multiple coulmn
+
+-for single coulumn
+-- Here I group totalExpenseAmount by each userId
+
+const userAggregatedExpenses = await Expense.findAll({
+      attributes: [
+        "userId",  // Group by this column
+        [Sequelize.fn("SUM", Sequelize.col("amount")), "totalAmount"], // sum is operator which operation we wnat to do we can do average multiplication etc
+      ],
+      group: ["userId"], // Group by category
+    })
+
+--for multiple coulmn
+-- if I want to group totalExpenseAmount by userId and category
+
+const userAggregatedExpenses = await Expense.findAll({
+      attributes: [
+        "userId",
+        "category"
+        [Sequelize.fn("SUM", Sequelize.col("amount")), "totalAmount"], // Aggregate
+      ],
+      group: ["userId","category"], 
+    })
+
 

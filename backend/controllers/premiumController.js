@@ -1,3 +1,5 @@
+const Sequelize = require("sequelize");
+
 const Expense = require("../models/expense");
 const User = require("../models/user");
 
@@ -8,27 +10,19 @@ exports.showLeaderboard = async (req, res, next) => {
         .status(403)
         .json({ sucess: false, message: "You are not a premium user" });
     }
-    const expenses = await Expense.findAll();
-    const users = await User.findAll();
-    let userTotalExpenses = {};
 
-    expenses.forEach((expense) => {
-      if (userTotalExpenses[expense.userId]) {
-        userTotalExpenses[expense.userId] += expense.amount;
-      } else {
-        userTotalExpenses[expense.userId] = expense.amount;
-      }
+    const leaderboardOfUsers = await User.findAll({
+      attributes: [
+        "id",
+        "name",
+        [Sequelize.fn("sum", Sequelize.col("expenses.amount")), "totalExpense"],
+      ],
+      include: [{ model: Expense, attributes: [] }],
+      group: ["user.id"],
+      order: [["totalExpense", "DESC"]],
     });
-    let userLeaderboardDetails = [];
-    users.forEach((user) => {
-      userLeaderboardDetails.push({
-        name: user.name,
-        totalExpense: userTotalExpenses[user.id] || 0,
-      });
-    });
-    userLeaderboardDetails.sort((a, b) => b.totalExpense - a.totalExpense);
 
-    res.status(200).json({ userLeaderboardDetails, success: true });
+    res.status(200).json({ leaderboardOfUsers, success: true });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ sucess: false });

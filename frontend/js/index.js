@@ -178,7 +178,7 @@ const showPremium = () => {
       console.log(response.data);
       const leaderboardList = document.getElementById("leaderList");
       leaderboardList.innerHTML = "";
-      response.data.userLeaderboardDetails.forEach((user) => {
+      response.data.leaderboardOfUsers.forEach((user) => {
         const userItem = document.createElement("li");
         userItem.textContent = `${user.name} - ${user.totalExpense}`;
         leaderboardList.appendChild(userItem);
