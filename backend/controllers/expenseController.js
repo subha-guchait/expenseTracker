@@ -1,5 +1,6 @@
 const Expense = require("../models/expense");
 const User = require("../models/user");
+const sequelize = require("../config/database");
 
 exports.getExpenses = async (req, res, next) => {
   try {
@@ -12,6 +13,7 @@ exports.getExpenses = async (req, res, next) => {
 };
 
 exports.postExpense = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
     const { amount, desc, category } = req.body;
 
@@ -21,20 +23,27 @@ exports.postExpense = async (req, res, next) => {
         .json({ success: false, message: "Parameters missing" });
     }
 
-    const expense = await req.user.createExpense({ amount, desc, category });
+    const expense = await req.user.createExpense(
+      { amount, desc, category },
+      { transaction: t }
+    );
 
-    const user = await User.findByPk(req.user.id);
+    await User.increment(
+      { totalexpense: amount },
+      { where: { id: req.user.id }, transaction: t }
+    );
 
-    await user.increment("totalexpense", { by: amount });
-
+    await t.commit();
     return res.status(201).json({ expense, sucess: true });
   } catch (err) {
+    await t.rollback();
     console.log(err);
     return res.status(500).json({ sucess: false });
   }
 };
 
 exports.deleteExpense = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
     const expenseId = req.params.expenseId;
 
@@ -45,14 +54,21 @@ exports.deleteExpense = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "Expense not found" });
     }
-    const user = await User.findByPk(req.user.id);
-    await expense.destroy();
-    await user.decrement("totalexpense", { by: expense.amount });
+
+    await expense.destroy({ transaction: t });
+
+    await User.decrement(
+      { totalexpense: expense.amount },
+      { where: { id: req.user.id }, transaction: t }
+    );
+
+    await t.commit();
 
     return res
       .status(200)
       .json({ sucess: true, message: "expense deleted sucessfully" });
   } catch (err) {
+    await t.rollback();
     console.log(err);
     return res.status(500).json({ sucess: false });
   }
