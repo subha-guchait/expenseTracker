@@ -180,7 +180,7 @@ const showPremium = () => {
       leaderboardList.innerHTML = "";
       response.data.leaderboardOfUsers.forEach((user) => {
         const userItem = document.createElement("li");
-        userItem.textContent = `${user.name} - ${user.totalExpense}`;
+        userItem.textContent = `${user.name} - ${user.totalexpense}`;
         leaderboardList.appendChild(userItem);
       });
       const leaderboardSection = document.getElementById("leaderboardSection");

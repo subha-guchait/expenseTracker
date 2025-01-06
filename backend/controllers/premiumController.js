@@ -12,14 +12,8 @@ exports.showLeaderboard = async (req, res, next) => {
     }
 
     const leaderboardOfUsers = await User.findAll({
-      attributes: [
-        "id",
-        "name",
-        [Sequelize.fn("sum", Sequelize.col("expenses.amount")), "totalExpense"],
-      ],
-      include: [{ model: Expense, attributes: [] }],
-      group: ["user.id"],
-      order: [["totalExpense", "DESC"]],
+      attributes: ["name", "totalexpense"],
+      order: [["totalexpense", "DESC"]],
     });
 
     res.status(200).json({ leaderboardOfUsers, success: true });

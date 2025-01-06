@@ -1,8 +1,8 @@
 const Expense = require("../models/expense");
+const User = require("../models/user");
 
 exports.getExpenses = async (req, res, next) => {
   try {
-    // console.log(req.user);
     const expenses = await req.user.getExpenses();
     return res.status(200).json({ expenses, sucess: true });
   } catch (err) {
@@ -20,16 +20,12 @@ exports.postExpense = async (req, res, next) => {
         .status(400)
         .json({ success: false, message: "Parameters missing" });
     }
-    console.log({ amount, desc, category });
 
     const expense = await req.user.createExpense({ amount, desc, category });
 
-    // const expense = await Expense.create({
-    //     amount,
-    //     desc,
-    //     category,
-    //     userId: req.user.id,
-    //   });
+    const user = await User.findByPk(req.user.id);
+
+    await user.increment("totalexpense", { by: amount });
 
     return res.status(201).json({ expense, sucess: true });
   } catch (err) {
@@ -42,13 +38,17 @@ exports.deleteExpense = async (req, res, next) => {
   try {
     const expenseId = req.params.expenseId;
 
-    const response = await Expense.destroy({
-      where: {
-        userId: req.user.id,
-        id: expenseId,
-      },
-    });
-    console.log(response);
+    const expense = await Expense.findByPk(expenseId);
+
+    if (!expense) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Expense not found" });
+    }
+    const user = await User.findByPk(req.user.id);
+    await expense.destroy();
+    await user.decrement("totalexpense", { by: expense.amount });
+
     return res
       .status(200)
       .json({ sucess: true, message: "expense deleted sucessfully" });

@@ -64,3 +64,16 @@ const userAggregatedExpenses = await Expense.findAll({
     })
 
 
+
+-- prob: Using  sql join how we can get total expense
+ -sol: 
+    const leaderboardOfUsers = await User.findAll({
+       attributes: [
+         "id",
+         "name",
+         [Sequelize.fn("sum", Sequelize.col("expenses.amount")), "totalExpense"],
+       ],
+       include: [{ model: Expense, attributes: [] }], // this is 2nd table which we want to join
+       group: ["user.id"],
+       order: [["totalExpense", "DESC"]],
+     });
