@@ -1,0 +1,12 @@
+.forgot-password {
+  color: #545454;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: lighter;
+}
+.forgot-password:hover {
+  text-decoration: underline;
+  color: #474747;
+  transition: color 0.3s ease;
+}
