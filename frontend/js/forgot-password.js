@@ -18,7 +18,7 @@ form.addEventListener("submit", async (e) => {
       "http://localhost:3000/password/forgotpassword",
       emailJson
     );
-    alert("Password reset link sent to your email");
+
     form.reset();
     document.getElementById("success-message").style.display = "block"; // Show success message
     form.style.display = "none";
