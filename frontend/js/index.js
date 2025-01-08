@@ -187,10 +187,23 @@ const showPremium = () => {
       leaderboardSection.style.display = "block";
 
       leaderboardSection.scrollIntoView({ behavior: "smooth" });
+
+      showLeaderboardBtn.style.display = "none";
+      const closeLeaderboardBtn = document.createElement("button");
+      closeLeaderboardBtn.textContent = "Hide Leaderboard";
+      closeLeaderboardBtn.id = "close-leaderboard";
+      header.appendChild(closeLeaderboardBtn);
+      closeLeaderboardBtn.addEventListener("click", () => {
+        leaderboardSection.style.display = "none";
+        closeLeaderboardBtn.remove();
+        showLeaderboardBtn.style.display = "block";
+      });
     } catch (err) {
       console.log(err);
     }
   });
+  const downloadBtn = document.getElementById("download-expenses");
+  downloadBtn.style.display = "block";
 };
 
 function parseJwt(token) {

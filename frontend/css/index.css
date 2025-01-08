@@ -179,6 +179,30 @@ form button:hover {
   }
 }
 
+/* premium features */
+
+#download-expenses {
+  display: none;
+  background-color: #ffc107;
+  color: #333;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#download-expenses:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+#download-expenses:active {
+  transform: translateY(1px);
+}
+
 /* Leaderboard Section */
 #leaderboardSection {
   background-color: #ffffff;
@@ -224,22 +248,43 @@ form button:hover {
 }
 
 #show-leaderboard {
-  background-color: #4caf50; /* Green background */
-  color: white; /* White text */
-  padding: 10px 20px; /* Padding for size */
-  font-size: 16px; /* Font size */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #show-leaderboard:hover {
-  background-color: #45a049; /* Darker green on hover */
-  transform: translateY(-2px); /*Slight upward movement on hover*/
+  background-color: #45a049;
+  transform: translateY(-2px);
 }
 
 #show-leaderboard:active {
-  transform: translateY(1px); /* Slight downward movement on click */
+  transform: translateY(1px);
+}
+
+#close-leaderboard {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#close-leaderboard:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+
+#close-leaderboard:active {
+  transform: translateY(1px);
 }
