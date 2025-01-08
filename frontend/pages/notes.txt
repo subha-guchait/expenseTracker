@@ -77,3 +77,11 @@ const userAggregatedExpenses = await Expense.findAll({
        group: ["user.id"],
        order: [["totalExpense", "DESC"]],
      });
+
+
+
+pending task i can do :
+
+-add exiry time to reset link using dateNow() for this i have to add expiry time field in database
+-currently i am giving the update password form from backend but i will redirect the user in the frontend form after checking the link is active
+--for redirect i have to use res.redirect()

@@ -11,6 +11,7 @@ const sequelize = require("./config/database");
 const User = require("./models/user");
 const Expense = require("./models/expense");
 const Order = require("./models/order");
+const forgotPasswordRequest = require("./models/forgotpasswordrequest");
 
 const app = express();
 
@@ -28,6 +29,9 @@ User.hasMany(Expense);
 
 Order.belongsTo(User);
 User.hasMany(Order);
+
+forgotPasswordRequest.belongsTo(User);
+User.hasMany(forgotPasswordRequest);
 
 const startServer = async (port) => {
   try {
