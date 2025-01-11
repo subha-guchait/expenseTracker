@@ -12,5 +12,10 @@ router.get(
   userAuth.authenticate,
   userController.getUpdatedAccessToken
 );
+router.get(
+  "/downloadrecords",
+  userAuth.authenticate,
+  userController.getDownloadRecords
+);
 
 module.exports = router;

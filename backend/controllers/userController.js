@@ -4,6 +4,7 @@ const User = require("../models/user");
 const {
   generateAccessToken,
 } = require("../services/generateAcesstokenService");
+const { downloadRecords } = require("../services/userService");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -68,5 +69,15 @@ exports.getUpdatedAccessToken = async (req, res, next) => {
   } catch (err) {
     console.err("Error updating access token:", err.message);
     res.status(500).json({ message: "Error updating access token" });
+  }
+};
+
+exports.getDownloadRecords = async (req, res, next) => {
+  try {
+    const records = await downloadRecords(req.user.id);
+    return res.status(200).json({ records, success: true });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ success: false });
   }
 };

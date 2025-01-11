@@ -202,8 +202,34 @@ const showPremium = () => {
       console.log(err);
     }
   });
+
+  const downloadSection = document.getElementById("downloadSection");
+  downloadSection.style.display = "block";
+
   const downloadBtn = document.getElementById("download-expenses");
-  downloadBtn.style.display = "block";
+  downloadBtn.addEventListener("click", async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        "http://localhost:3000/download/allexpenses",
+        { headers: { Authorization: token } }
+      );
+      console.log(response.data);
+
+      const a = document.createElement("a");
+      a.href = response.data.fileUrl;
+      a.target = "_blank";
+      a.download = "expenses.pdf";
+      a.click();
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  const previousDownloadBtn = document.getElementById("previous-downloads");
+  previousDownloadBtn.addEventListener("click", async () => {
+    displayRecords();
+  });
 };
 
 function parseJwt(token) {
@@ -232,3 +258,71 @@ const updateAccessToken = async () => {
   );
   localStorage.setItem("token", response.data.token);
 };
+
+async function displayRecords() {
+  try {
+    document.getElementById("recordsDiv").style.display = "block";
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      "http://localhost:3000/user/downloadrecords",
+      {
+        headers: { Authorization: token },
+      }
+    );
+
+    document.getElementById("records").innerHTML = "";
+
+    response.data.records.forEach((record) => {
+      const ul = document.getElementById("records");
+      const li = document.createElement("li");
+      const rawDate = new Date(record.createdAt);
+
+      li.textContent = formatDate(rawDate);
+
+      const dlink = document.createElement("a");
+      dlink.href = record.url;
+      dlink.target = "_blank";
+      dlink.textContent = "Download";
+      dlink.download = "expenses.pdf";
+
+      li.appendChild(dlink);
+      ul.appendChild(li);
+    });
+  } catch (error) {
+    console.error(error);
+    alert(error);
+  }
+}
+
+function formatDate(rawDate) {
+  const date = new Date(rawDate);
+
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const dayOfWeek = daysOfWeek[date.getDay()];
+  const dayOfMonth = String(date.getDate()).padStart(2, "0");
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  // Format the date as "ddd dd mmmm yyyy"
+  const formattedDateTime = `${dayOfWeek} ${dayOfMonth} ${month} ${year} ${hours}:${minutes}:${seconds}`;
+
+  return formattedDateTime;
+}
