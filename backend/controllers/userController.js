@@ -4,7 +4,7 @@ const User = require("../models/user");
 const {
   generateAccessToken,
 } = require("../services/generateAcesstokenService");
-const { downloadRecords } = require("../services/userService");
+const { downloadRecords, createNewUser } = require("../services/userService");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -14,12 +14,9 @@ exports.signup = async (req, res, next) => {
       return res.status(400).json({ error: "All fields are mandatory" });
     }
 
-    const saltrounds = 10;
-    bcrypt.hash(password, saltrounds, async (err, hash) => {
-      //   console.log(err);
-      await User.create({ name, email, password: hash });
-      res.status(201).json({ message: "sucessfully created new user" });
-    });
+    const newUser = await createNewUser(name, email, password);
+
+    res.status(201).json({ message: "sucessfully created new user" });
   } catch (err) {
     res.status(500).json({ err: err });
   }

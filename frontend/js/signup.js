@@ -23,9 +23,11 @@ signUpForm.addEventListener("submit", async (event) => {
       "http://localhost:3000/user/signup",
       userDetail
     );
-    console.log(response.data);
+    console.log(response);
     signUpForm.reset();
-    window.location.href = "./login.html";
+    if (response.status === 201) {
+      window.location.href = "./login.html";
+    }
   } catch (err) {
     if (err.response.data.err.errors[0].message == "email must be unique") {
       const p = document.createElement("p");

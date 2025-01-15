@@ -4,6 +4,7 @@ const desc = document.getElementById("desc");
 const category = document.getElementById("category");
 const premiumBtn = document.getElementById("buy-premium");
 const header = document.getElementById("header");
+const profileBtn = document.getElementById("profileButton");
 
 addExpenseForm.addEventListener("submit", async (e) => {
   try {
@@ -16,7 +17,7 @@ addExpenseForm.addEventListener("submit", async (e) => {
 
     const token = localStorage.getItem("token");
 
-    const response = await axios.post(
+    await axios.post(
       "http://localhost:3000/expense/postexpense",
       expenseDetail,
       {
@@ -24,7 +25,7 @@ addExpenseForm.addEventListener("submit", async (e) => {
       }
     );
 
-    displayNewExpense(response.data.expense);
+    fetchExpenses(1);
     addExpenseForm.reset();
   } catch (err) {
     console.log(err);
@@ -39,28 +40,20 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
     const user = parseJwt(token);
-    // console.log(user);
+
     if (user.isPremium) {
       showPremium();
     }
 
-    const response = await axios.get(
-      "http://localhost:3000/expense/getexpenses",
-      {
-        headers: { Authorization: token },
-      }
-    );
-
-    response.data.expenses.forEach((expense) => {
-      displayNewExpense(expense);
-    });
+    fetchExpenses(1);
   } catch (err) {
     console.log(err);
   }
 });
 
-function displayNewExpense(expense) {
+function displayExpense(expense) {
   const expenseList = document.getElementById("expenseList");
+
   const expenseItem = document.createElement("li");
   expenseItem.setAttribute("id", `expense-${expense.id}`);
   expenseItem.innerHTML = `${
@@ -88,6 +81,40 @@ function displayNewExpense(expense) {
       console.log(err);
     }
   });
+}
+
+async function fetchExpenses(page = 1) {
+  const limit = localStorage.getItem("pageSize") || 5;
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `http://localhost:3000/expense/expenses?page=${page}&limit=${limit}`,
+      {
+        headers: { Authorization: token },
+      }
+    );
+
+    const expenseList = document.getElementById("expenseList");
+    expenseList.innerHTML = ""; // Clear existing list
+
+    response.data.expenses.forEach((expense) => displayExpense(expense));
+
+    const paginationDiv = document.getElementById("pagination");
+    paginationDiv.innerHTML = ""; // Clear existing pagination
+
+    for (let i = 1; i <= response.data.lastPage; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.textContent = i;
+      if (i === parseInt(page)) {
+        pageButton.disabled = true; // Disable current page button
+      }
+      pageButton.onclick = () => fetchExpenses(i);
+      paginationDiv.appendChild(pageButton);
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    alert("An error occurred. Please try again.");
+  }
 }
 
 premiumBtn.addEventListener("click", async (e) => {
@@ -138,7 +165,7 @@ const getSessionId = async (token) => {
       "http://localhost:3000/purchase/premiummembership",
       { headers: { Authorization: token } }
     );
-    // console.log(res.data);
+
     return res.data.payment_session_id;
   } catch (err) {
     console.log(err);
@@ -326,3 +353,28 @@ function formatDate(rawDate) {
 
   return formattedDateTime;
 }
+
+profileBtn.addEventListener("click", () => {
+  const profileMenu = document.getElementById("profileMenu");
+  profileMenu.style.display =
+    profileMenu.style.display === "none" || profileMenu.style.display === ""
+      ? "block"
+      : "none";
+});
+
+document.getElementById("logoutButton").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location.href = "./pages/login.html";
+});
+
+// Close the dropdown if clicked outside
+document.addEventListener("click", (e) => {
+  const profileMenu = document.getElementById("profileMenu");
+  if (
+    profileMenu.style.display === "block" &&
+    !profileMenu.contains(e.target) &&
+    !profileBtn.contains(e.target)
+  ) {
+    profileMenu.style.display = "none";
+  }
+});

@@ -2,13 +2,45 @@ const Expense = require("../models/expense");
 const User = require("../models/user");
 const sequelize = require("../config/database");
 
-exports.getExpenses = async (req, res, next) => {
+exports.getAllExpenses = async (req, res, next) => {
   try {
     const expenses = await req.user.getExpenses();
     return res.status(200).json({ expenses, sucess: true });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ sucess: false });
+  }
+};
+
+exports.getLimitExpenses = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const offset = (page - 1) * limit; // starting index opf database query
+
+    const { count, rows: expenses } = await Expense.findAndCountAll({
+      where: { userId: req.user.id },
+      order: [["createdAt", "DESC"]],
+      limit: limit,
+      offset: offset,
+    });
+
+    const totalPages = Math.ceil(count / limit);
+
+    res.status(200).json({
+      expenses,
+      currentPage: page,
+      totalExpense: count,
+      hasPreviousPage: page > 1,
+      hasNextpage: page < totalPages,
+      previousPage: page > 1 ? page - 1 : null,
+      nextPage: page < totalPages ? page + 1 : null,
+      lastPage: totalPages,
+    });
+  } catch (err) {
+    console.error("Error fetching expenses:", err);
+    res.status(500).json({ error: "Failed to fetch expenses" });
   }
 };
 

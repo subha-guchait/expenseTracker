@@ -8,7 +8,13 @@ const router = express.Router();
 router.get(
   "/getexpenses",
   userAuth.authenticate,
-  expenseController.getExpenses
+  expenseController.getAllExpenses
+);
+
+router.get(
+  "/expenses",
+  userAuth.authenticate,
+  expenseController.getLimitExpenses
 );
 
 router.post(

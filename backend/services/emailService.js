@@ -11,28 +11,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// const mailOptions = {
-//   from: {
-//     name: "Subhankar 👻",
-//     address: "process.env.USER",
-//   }, // sender address
-//   to: ["shuvankarguchait@gmail.com"], // list of receivers
-//   subject: "Hello ✔", // Subject line
-//   text: "Hello world?", // plain text body
-//   html: "<b>Hello world?</b>", // html body
-// };
-
-// const sendMail = async () => {
-//   try {
-//     await transporter.sendMail(mailOptions);
-//     console.log("Email sent");
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// sendMail();
-
 const sendMail = async (to, subject, html) => {
   try {
     await transporter.sendMail({
