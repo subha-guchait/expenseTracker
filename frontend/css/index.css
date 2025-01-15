@@ -127,6 +127,46 @@ form button:hover {
   transform: translateY(-2px);
 }
 
+/* Modern Styling for Label and Dropdown */
+
+label[for="pageLimit"] {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a4a4a; /* Neutral dark grey for text */
+  margin-bottom: 6px;
+  display: inline-block; /*Align neatly with dropdown */
+}
+
+#pageLimit {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333; /* Neutral grey for text */
+  background: #f9f9f9; /* Soft background */
+  border: 1px solid #ddd; /* Subtle border */
+  border-radius: 8px; /* Smooth, rounded corners */
+  appearance: none; /* Removes default browser dropdown arrow */
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: all 0.3s ease;
+}
+
+#pageLimit:hover {
+  border-color: #222121; /* Light teal for hover effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+}
+
+#pageLimit:focus {
+  border-color: #007bff; /* Focus color */
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5); /* Glow effect */
+  background-color: #fff; /* Crisp white background on focus */
+}
+
+/* To ensure the dropdown arrow icon works consistently across browsers */
+select::-ms-expand {
+  display: none;
+}
+
 /* Expense List */
 #expHead {
   font-size: 28px;
@@ -168,6 +208,33 @@ form button:hover {
 .delete-btn:hover {
   background-color: #e05750;
   transform: translateY(-2px);
+}
+
+/* Pagination */
+#pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#pagination button {
+  background-color: #36c9c6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#pagination button:hover {
+  background-color: #2baba9;
+}
+
+#pagination button:disabled {
+  background-color: #b2dfdb;
+  cursor: default;
 }
 
 /* Download Section */

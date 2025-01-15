@@ -5,6 +5,7 @@ const category = document.getElementById("category");
 const premiumBtn = document.getElementById("buy-premium");
 const header = document.getElementById("header");
 const profileBtn = document.getElementById("profileButton");
+const pageLimit = document.getElementById("pageLimit");
 
 addExpenseForm.addEventListener("submit", async (e) => {
   try {
@@ -84,7 +85,7 @@ function displayExpense(expense) {
 }
 
 async function fetchExpenses(page = 1) {
-  const limit = localStorage.getItem("pageSize") || 5;
+  const limit = localStorage.getItem("pageLimit") || 5;
   try {
     const token = localStorage.getItem("token");
     const response = await axios.get(
@@ -116,6 +117,12 @@ async function fetchExpenses(page = 1) {
     alert("An error occurred. Please try again.");
   }
 }
+
+pageLimit.onchange = () => {
+  const pageLimitValue = document.getElementById("pageLimit").value;
+  localStorage.setItem("pageLimit", pageLimitValue);
+  fetchExpenses(1);
+};
 
 premiumBtn.addEventListener("click", async (e) => {
   e.preventDefault();

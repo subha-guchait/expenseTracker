@@ -54,13 +54,20 @@
     </div>
 
     <h2 id="expHead">Expenses</h2>
-    <ul id="expenseList"></ul>
-    <div id="pagination">
-      <!-- <button id="prevPage" disabled>Previous</button>
-      <span id="currentPage">Page 1</span>
-      <button id="nextPage">Next</button>
-      <button id="lastPage">Last</button> -->
+    <div class="pagelimit-container">
+      <label for="pageLimit">Page Size:</label>
+      <select id="pageLimit" name="pageLimit">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="50">50</option>
+      </select>
     </div>
+
+    <ul id="expenseList"></ul>
+
+    <div id="pagination"></div>
 
     <div id="leaderboardSection" style="display: none">
       <h2 id="leadHead">Leaderboard</h2>
