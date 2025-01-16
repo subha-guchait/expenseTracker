@@ -1,5 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
+
+const helmet = require("helmet");
+const morgan = require("morgan");
 require("dotenv").config();
 
 const userRoutes = require("./routes/userRoutes");
@@ -17,7 +22,15 @@ const forgotPasswordRequest = require("./models/forgotpasswordrequest");
 
 const app = express();
 
+const acessLogStream = fs.createWriteStream(
+  path.join(__dirname, "logs/access.log"),
+  { flags: "a" }
+);
+
 app.use(cors());
+app.use(helmet());
+app.use(morgan("combined", { stream: acessLogStream }));
+
 app.use(express.json());
 
 app.use("/user", userRoutes);
@@ -48,4 +61,4 @@ const startServer = async (port) => {
   }
 };
 
-startServer(3000);
+startServer(process.env.PORT);
