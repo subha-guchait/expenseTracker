@@ -7,7 +7,7 @@ const header = document.getElementById("header");
 const profileBtn = document.getElementById("profileButton");
 const pageLimit = document.getElementById("pageLimit");
 
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL = "http://localhost:3000";
 
 addExpenseForm.addEventListener("submit", async (e) => {
   try {

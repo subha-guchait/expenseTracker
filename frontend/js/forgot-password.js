@@ -1,7 +1,7 @@
 const form = document.getElementById("forgot-password-form");
 const email = document.getElementById("email");
 
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL = "http://localhost:3000";
 
 form.addEventListener("submit", async (e) => {
   try {

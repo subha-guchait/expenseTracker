@@ -3,7 +3,7 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const formContainer = document.getElementById("form-container");
 
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL = "http://localhost:3000";
 
 logInForm.addEventListener("submit", async (e) => {
   try {
