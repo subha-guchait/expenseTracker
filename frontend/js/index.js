@@ -193,15 +193,20 @@ const verifyPayment = async (token, orderId) => {
 };
 
 const showPremium = () => {
-  premiumBtn.style.visibility = "hidden";
+  premiumBtn.style.display = "none";
   const premiumHeader = document.createElement("div");
   premiumHeader.id = "premium-header";
-  premiumHeader.textContent = "\u{1F389} Welcome, Premium User!";
-  header.appendChild(premiumHeader);
+  premiumHeader.textContent = "Premium";
+  const premium = document.getElementById("premium");
+  premium.appendChild(premiumHeader);
   const showLeaderboardBtn = document.createElement("button");
-  showLeaderboardBtn.textContent = "Show Leaderboard";
+  showLeaderboardBtn.textContent = "Leaderboard";
   showLeaderboardBtn.id = "show-leaderboard";
-  header.appendChild(showLeaderboardBtn);
+
+  const leaderboardBtnSection = document.getElementById(
+    "leaderBoardBtnSection"
+  );
+  leaderboardBtnSection.appendChild(showLeaderboardBtn);
   showLeaderboardBtn.addEventListener("click", async () => {
     try {
       const token = localStorage.getItem("token");
@@ -226,7 +231,7 @@ const showPremium = () => {
       const closeLeaderboardBtn = document.createElement("button");
       closeLeaderboardBtn.textContent = "Hide Leaderboard";
       closeLeaderboardBtn.id = "close-leaderboard";
-      header.appendChild(closeLeaderboardBtn);
+      leaderboardBtnSection.appendChild(closeLeaderboardBtn);
       closeLeaderboardBtn.addEventListener("click", () => {
         leaderboardSection.style.display = "none";
         closeLeaderboardBtn.remove();

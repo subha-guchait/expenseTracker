@@ -16,7 +16,7 @@ body {
   width: 100%;
   display: flex;
   align-items: center;
-  /* justify-content: space-between;  */
+  justify-content: space-between;
   padding: 15px 20px;
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -25,6 +25,9 @@ body {
   z-index: 1000;
 }
 
+#premium {
+  padding: 5px;
+}
 #premium-header {
   font-size: 20px;
   font-weight: 600; /* Slightly lighter bold */
@@ -52,8 +55,8 @@ body {
 
 #profileButton {
   display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
+  align-items: center;
+  justify-content: center;
   width: 50px; /* Adjust as needed */
   height: 50px; /* Adjust as needed */
   cursor: pointer;
@@ -61,6 +64,7 @@ body {
   text-decoration: none;
   background: none; /* Removes button-like background */
   border: none; /* Removes border */
+  padding: 5px;
 }
 
 #profileLogo {
@@ -73,6 +77,33 @@ body {
 #profileButton:hover #profileLogo {
   transform: scale(1.1); /* Slight zoom effect */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#profileMenu {
+  position: absolute;
+  top: 60px; /* Adjust based on header height */
+  right: 20px; /* Adjust to align with profile button */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: none; /* Initially hidden */
+}
+
+#profileMenu button {
+  width: 100%;
+  padding: 10px 15px;
+  text-align: left;
+  font-size: 16px;
+  color: #333;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#profileMenu button:hover {
+  background-color: #f5f5f5;
 }
 
 #container {
@@ -371,33 +402,6 @@ select::-ms-expand {
 #close-leaderboard:hover {
   background-color: #e05750;
   transform: translateY(-2px);
-}
-
-#profileMenu {
-  position: absolute;
-  top: 60px; /* Adjust based on header height */
-  right: 20px; /* Adjust to align with profile button */
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  display: none; /* Initially hidden */
-}
-
-#profileMenu button {
-  width: 100%;
-  padding: 10px 15px;
-  text-align: left;
-  font-size: 16px;
-  color: #333;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-#profileMenu button:hover {
-  background-color: #f5f5f5;
 }
 
 /* Responsive Design */

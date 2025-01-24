@@ -1,5 +1,5 @@
-const Expense = require("../models/Expense");
-const DownloadFile = require("../models/DownloadFile");
+const Expense = require("../models/expense");
+const DownloadFile = require("../models/downloadFile");
 const { uploadFileToS3 } = require("../services/awsService");
 const { generatePDF } = require("../services/pdfService");
 

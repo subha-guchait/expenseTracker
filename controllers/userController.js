@@ -14,6 +14,14 @@ exports.signup = async (req, res, next) => {
       return res.status(400).json({ error: "All fields are mandatory" });
     }
 
+    const userExsits = await User.findOne({ where: { email: email } });
+    if (userExsits) {
+      return res.status(409).json({
+        sucess: false,
+        message: "Email already exists. Please use a different email.",
+      });
+    }
+
     const newUser = await createNewUser(name, email, password);
 
     res.status(201).json({ message: "sucessfully created new user" });

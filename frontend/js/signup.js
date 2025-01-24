@@ -29,7 +29,7 @@ signUpForm.addEventListener("submit", async (event) => {
       window.location.href = "./login.html";
     }
   } catch (err) {
-    if (err.response.data.err.errors[0].message == "email must be unique") {
+    if (err.response.status == 409) {
       const p = document.createElement("p");
       p.id = "error-message";
 
