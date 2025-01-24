@@ -126,7 +126,7 @@ premiumBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   try {
     const token = localStorage.getItem("token");
-    let res = await axios.get("${API_BASE_URL}/purchase/premiummembership", {
+    let res = await axios.get(`${API_BASE_URL}/purchase/premiummembership`, {
       headers: { Authorization: token },
     });
     console.log(res.data);
