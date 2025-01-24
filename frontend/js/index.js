@@ -7,6 +7,8 @@ const header = document.getElementById("header");
 const profileBtn = document.getElementById("profileButton");
 const pageLimit = document.getElementById("pageLimit");
 
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
+
 addExpenseForm.addEventListener("submit", async (e) => {
   try {
     e.preventDefault();
@@ -18,13 +20,9 @@ addExpenseForm.addEventListener("submit", async (e) => {
 
     const token = localStorage.getItem("token");
 
-    await axios.post(
-      "http://localhost:3000/expense/postexpense",
-      expenseDetail,
-      {
-        headers: { Authorization: token },
-      }
-    );
+    await axios.post(`${API_BASE_URL}/expense/postexpense`, expenseDetail, {
+      headers: { Authorization: token },
+    });
 
     fetchExpenses(1);
     addExpenseForm.reset();
@@ -72,7 +70,7 @@ function displayExpense(expense) {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `http://localhost:3000/expense/deleteexpense/${expense.id}`,
+        `${API_BASE_URL}/expense/deleteexpense/${expense.id}`,
         {
           headers: { Authorization: token },
         }
@@ -89,7 +87,7 @@ async function fetchExpenses(page = 1) {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.get(
-      `http://localhost:3000/expense/expenses?page=${page}&limit=${limit}`,
+      `${API_BASE_URL}/expense/expenses?page=${page}&limit=${limit}`,
       {
         headers: { Authorization: token },
       }
@@ -128,10 +126,9 @@ premiumBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   try {
     const token = localStorage.getItem("token");
-    let res = await axios.get(
-      "http://localhost:3000/purchase/premiummembership",
-      { headers: { Authorization: token } }
-    );
+    let res = await axios.get("${API_BASE_URL}/purchase/premiummembership", {
+      headers: { Authorization: token },
+    });
     console.log(res.data);
     let sessionId = res.data.paymentSessionId;
     let orderId = res.data.orderId;
@@ -147,7 +144,7 @@ premiumBtn.addEventListener("click", async (e) => {
     console.log(orderId);
 
     let response = await axios.post(
-      `http://localhost:3000/purchase/updatetransactionstatus/${orderId}`,
+      `${API_BASE_URL}/purchase/updatetransactionstatus/${orderId}`,
 
       { headers: { Authorization: token } }
     );
@@ -168,10 +165,9 @@ const cashfree = Cashfree({
 
 const getSessionId = async (token) => {
   try {
-    let res = await axios.get(
-      "http://localhost:3000/purchase/premiummembership",
-      { headers: { Authorization: token } }
-    );
+    let res = await axios.get(`${API_BASE_URL}/purchase/premiummembership`, {
+      headers: { Authorization: token },
+    });
 
     return res.data.payment_session_id;
   } catch (err) {
@@ -182,7 +178,7 @@ const getSessionId = async (token) => {
 const verifyPayment = async (token, orderId) => {
   try {
     let response = await axios.post(
-      "http://localhost:3000/purchase/updatetransactionstatus",
+      `${API_BASE_URL}/purchase/updatetransactionstatus`,
       { orderId: orderId },
       { headers: { Authorization: token } }
     );
@@ -210,10 +206,9 @@ const showPremium = () => {
   showLeaderboardBtn.addEventListener("click", async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        "http://localhost:3000/premium/leaderboard",
-        { headers: { Authorization: token } }
-      );
+      const response = await axios.get(`${API_BASE_URL}/premium/leaderboard`, {
+        headers: { Authorization: token },
+      });
       console.log(response.data);
       const leaderboardList = document.getElementById("leaderList");
       leaderboardList.innerHTML = "";
@@ -249,10 +244,9 @@ const showPremium = () => {
   downloadBtn.addEventListener("click", async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        "http://localhost:3000/download/allexpenses",
-        { headers: { Authorization: token } }
-      );
+      const response = await axios.get(`${API_BASE_URL}/download/allexpenses`, {
+        headers: { Authorization: token },
+      });
       console.log(response.data);
 
       const a = document.createElement("a");
@@ -289,12 +283,9 @@ function parseJwt(token) {
 
 const updateAccessToken = async () => {
   const token = localStorage.getItem("token");
-  const response = await axios.get(
-    "http://localhost:3000/user/getupdatedtoken",
-    {
-      headers: { Authorization: token },
-    }
-  );
+  const response = await axios.get(`${API_BASE_URL}/user/getupdatedtoken`, {
+    headers: { Authorization: token },
+  });
   localStorage.setItem("token", response.data.token);
 };
 
@@ -302,12 +293,9 @@ async function displayRecords() {
   try {
     document.getElementById("recordsDiv").style.display = "block";
     const token = localStorage.getItem("token");
-    const response = await axios.get(
-      "http://localhost:3000/user/downloadrecords",
-      {
-        headers: { Authorization: token },
-      }
-    );
+    const response = await axios.get(`${API_BASE_URL}/user/downloadrecords`, {
+      headers: { Authorization: token },
+    });
 
     document.getElementById("records").innerHTML = "";
 

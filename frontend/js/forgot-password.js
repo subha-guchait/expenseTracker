@@ -1,6 +1,8 @@
 const form = document.getElementById("forgot-password-form");
 const email = document.getElementById("email");
 
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
+
 form.addEventListener("submit", async (e) => {
   try {
     e.preventDefault();
@@ -15,7 +17,7 @@ form.addEventListener("submit", async (e) => {
     };
 
     const response = await axios.post(
-      "http://localhost:3000/password/forgotpassword",
+      `${API_BASE_URL}/password/forgotpassword`,
       emailJson
     );
 
