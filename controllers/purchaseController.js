@@ -28,7 +28,6 @@ exports.processpayment = async (req, res, next) => {
       name,
       email
     );
-    console.log("payment session id:", paymentSessionId);
 
     //save the payment details in the database
     await Order.create({
@@ -63,8 +62,6 @@ exports.updateTransactionStatus = async (req, res, next) => {
     //update the order status
     order.paymentstatus = orderStatus;
     await order.save();
-
-    console.log("userId :", order.userId);
 
     //update the user to premium user
     if (orderStatus === "Sucess") {

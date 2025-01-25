@@ -1,4 +1,3 @@
-console.log("server starting");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -21,7 +20,6 @@ const Order = require("./models/order");
 const DownloadFile = require("./models/downloadFile");
 const forgotPasswordRequest = require("./models/forgotpasswordrequest");
 
-console.log("file fetched");
 const app = express();
 
 const acessLogStream = fs.createWriteStream(
@@ -45,10 +43,6 @@ app.use("/premium", premiumRoutes);
 app.use("/password", passwordRoutes);
 app.use("/download", downloadRoutes);
 
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "frontend"));
-// });
-
 Expense.belongsTo(User, { constrains: true, onDelete: "CASCADE" });
 User.hasMany(Expense);
 
@@ -61,12 +55,9 @@ User.hasMany(forgotPasswordRequest);
 DownloadFile.belongsTo(User);
 User.hasMany(DownloadFile);
 
-console.log("before start server");
-
 const startServer = async (port) => {
   try {
     await sequelize.sync();
-    console.log("db synced");
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

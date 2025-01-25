@@ -4,8 +4,6 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const formContainer = document.getElementById("form-container");
 
-const API_BASE_URL = "http://localhost:3000";
-
 signUpForm.addEventListener("submit", async (event) => {
   try {
     event.preventDefault();
